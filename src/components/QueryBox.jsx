@@ -52,11 +52,29 @@ function QueryBox() {
       <button onClick={handleRun}>Run Query</button>
 
       {error && <p className="error">{error}</p>}
-      {results && (
-        <pre className="results">
-          {JSON.stringify(results, null, 2)}
-        </pre>
-      )}
+      {results && results.length > 0 && (
+        <table className="results-table">
+            <thead>
+            <tr>
+                {Object.keys(results[0]).map((col) => (
+                <th key={col}>{col}</th>
+                ))}
+            </tr>
+            </thead>
+            <tbody>
+            {results.map((row, idx) => (
+                <tr key={idx}>
+                {Object.values(row).map((val, i) => (
+                    <td key={i}>{String(val)}</td>
+                ))}
+                </tr>
+            ))}
+            </tbody>
+        </table>
+    )}
+    {results && results.length === 0 && (
+    <p>No results found.</p>
+    )}
     </div>
   );
 }
