@@ -19,17 +19,109 @@ Order by: id ASC
 Hint: Use a WHERE clause 
     `,
     answer: [
-      { id: 225, date: '2025-04-01', products_purchased: 'toothpaste, panadol', shopname: 'Pharmacy Select', card_owner: 119 },
-      { id: 275, date: '2025-04-06', products_purchased: 'zofran, vitamin b gummies, panadol, creatine', shopname: 'Pharmacy Select', card_owner: 396 }
+      { id: 225, date: '2025-07-01', products_purchased: 'toothpaste, panadol', shopname: 'Pharmacy Select', card_owner: 119 },
+      { id: 275, date: '2025-07-04', products_purchased: 'zofran, vitamin b gummies, panadol, creatine', shopname: 'Pharmacy Select', card_owner: 396 }
     ],
     requiredColumns: ['id', 'date', 'products_purchased', 'shopname', 'card_owner'],
     orderBy: 'id asc',
     placeholder: `SELECT * FROM credit_card_statements`
   },
 
-  // Blank placeholders (stay locked until earlier hints are solved)
-  { id: 2, title: 'Hint 2 Double Shifts Worked', prompt: 'Coming soon…', answer: [], requiredColumns: [], orderBy: '', placeholder: '/* TBD */' },
-  { id: 3, title: 'Hint 3 (placeholder)', prompt: 'Coming soon…', answer: [], requiredColumns: [], orderBy: '', placeholder: '/* TBD */' },
+  { id: 2, 
+    title: 'Hint 2: Employee Shifts on Key Dates', 
+    prompt: `
+You're investigating which employees were working on the two key dates: July 1 and July 4, 2025.
+Use the employee_shifts, employees, and persons tables to join shift info to employee names.
+
+Return Columns: person_id, full_name, date
+Order By the date and the last name of the person in reverse lexicographic order
+Hint: Use WHERE on date to match the two dates of interest.`, 
+    answer: [{ person_id: 660, full_name: 'Veronica Woods', date: '2025-07-01' },
+    { person_id: 438, full_name: 'Kathryn West', date: '2025-07-01' },
+    { person_id: 731, full_name: 'Curtis Ware', date: '2025-07-01' },
+    { person_id: 410, full_name: 'Mark Villanueva', date: '2025-07-01' },
+    { person_id: 501, full_name: 'Carmen Thompson', date: '2025-07-01' },
+    { person_id: 11,  full_name: 'Kayla Taylor', date: '2025-07-01' },
+    { person_id: 872, full_name: 'Nicole Solis', date: '2025-07-01' },
+    { person_id: 349, full_name: 'Michelle Sellers', date: '2025-07-01' },
+    { person_id: 411, full_name: 'Kendra Parsons', date: '2025-07-01' },
+    { person_id: 216, full_name: 'Lori Oliver', date: '2025-07-01' },
+    { person_id: 230, full_name: 'Elizabeth Luna', date: '2025-07-01' },
+    { person_id: 631, full_name: 'Trevor Johnson', date: '2025-07-01' },
+    { person_id: 975, full_name: 'Thomas Huang', date: '2025-07-01' },
+    { person_id: 22,  full_name: 'Angela Herrera', date: '2025-07-01' },
+    { person_id: 67,  full_name: 'Lauren Harper', date: '2025-07-01' },
+    { person_id: 469, full_name: 'Jamie Gutierrez', date: '2025-07-01' },
+    { person_id: 1001, full_name: 'Gavin Drew', date: '2025-07-01' },
+    { person_id: 57,  full_name: 'Stephanie Clark', date: '2025-07-01' },
+    { person_id: 670, full_name: 'Christopher Campbell', date: '2025-07-01' },
+    { person_id: 998, full_name: 'Kathy Allen', date: '2025-07-01' },
+    { person_id: 650, full_name: 'Denise Young', date: '2025-07-04' },
+    { person_id: 722, full_name: 'Heather Williams', date: '2025-07-04' },
+    { person_id: 722, full_name: 'Heather Williams', date: '2025-07-04' },
+    { person_id: 428, full_name: 'John Welch', date: '2025-07-04' },
+    { person_id: 732, full_name: 'Hector Tucker', date: '2025-07-04' },
+    { person_id: 518, full_name: 'Jason Todd', date: '2025-07-04' },
+    { person_id: 672, full_name: 'Crystal Sparks', date: '2025-07-04' },
+    { person_id: 960, full_name: 'William Snyder', date: '2025-07-04' },
+    { person_id: 706, full_name: 'Victor Santiago', date: '2025-07-04' },
+    { person_id: 358, full_name: 'Audrey Ramirez', date: '2025-07-04' },
+    { person_id: 517, full_name: 'Shannon Peterson', date: '2025-07-04' },
+    { person_id: 751, full_name: 'Jacob Perry', date: '2025-07-04' },
+    { person_id: 340, full_name: 'Emily Parker', date: '2025-07-04' },
+    { person_id: 995, full_name: 'Dr. Murray', date: '2025-07-04' },
+    { person_id: 563, full_name: 'Danny Murphy', date: '2025-07-04' },
+    { person_id: 356, full_name: 'Charles Murphy', date: '2025-07-04' },
+    { person_id: 323, full_name: 'Kevin Morgan', date: '2025-07-04' },
+    { person_id: 167, full_name: 'Leslie Miller', date: '2025-07-04' },
+    { person_id: 314, full_name: 'Jacob Miller', date: '2025-07-04' },
+    { person_id: 760, full_name: 'Robin MD', date: '2025-07-04' },
+    { person_id: 470, full_name: 'Randall Love', date: '2025-07-04' },
+    { person_id: 233, full_name: 'Nicholas Lee', date: '2025-07-04' },
+    { person_id: 44, full_name: 'Christine Kim', date: '2025-07-04' },
+    { person_id: 7, full_name: 'John Johnson', date: '2025-07-04' },
+    { person_id: 226, full_name: 'Michelle Johnson', date: '2025-07-04' },
+    { person_id: 52, full_name: 'Elizabeth Jackson', date: '2025-07-04' },
+    { person_id: 190, full_name: 'Kayla Hurley', date: '2025-07-04' },
+    { person_id: 651, full_name: 'Christopher Huang', date: '2025-07-04' },
+    { person_id: 239, full_name: 'Jody Griffin', date: '2025-07-04' },
+    { person_id: 477, full_name: 'Bryan Gill', date: '2025-07-04' },
+    { person_id: 105, full_name: 'Stephen Garner', date: '2025-07-04' },
+    { person_id: 281, full_name: 'Gina Ford', date: '2025-07-04' },
+    { person_id: 802, full_name: 'Michael Duffy', date: '2025-07-04' },
+    { person_id: 1001, full_name: 'Gavin Drew', date: '2025-07-04' },
+    { person_id: 1001, full_name: 'Gavin Drew', date: '2025-07-04' },
+    { person_id: 954, full_name: 'Jessica Carr', date: '2025-07-04' },
+    { person_id: 533, full_name: 'Jacqueline Burke', date: '2025-07-04' },
+    { person_id: 187, full_name: 'Gregory Burch', date: '2025-07-04' },
+    { person_id: 19, full_name: 'Robin Brown', date: '2025-07-04' },
+    { person_id: 823, full_name: 'Dominic Becker', date: '2025-07-04' },
+    { person_id: 305, full_name: 'Mark Atkins', date: '2025-07-04' },
+    { person_id: 164, full_name: 'Melissa Allen', date: '2025-07-04' }], 
+    requiredColumns: ['person_id', 'full_name', 'date'], 
+    orderBy: 'date asc', 
+    placeholder: `SELECT * FROM employee_shifts`
+  },
+
+  { id: 3, 
+    title: 'Hint 3: Multiple Shifts Worked', 
+    prompt: `
+Find employees who worked two or more shifts between the dates identified in Hint 1.
+Use employee_shifts, employees, and persons table. 
+
+Return: employee_id renamed as Person ID, first name and last name concatenated as Full Name, count renamed as Shift Count
+Order by: employee_id, date
+Hint: Use GROUP BY and HAVING`, 
+    answer: [{ "Person ID": 340, "Full Name": "Emily Parker", "Shift Count": 2 },
+    { "Person ID": 356, "Full Name": "Charles Murphy", "Shift Count": 2 },
+    { "Person ID": 1001, "Full Name": "Gavin Drew", "Shift Count": 4 },
+    { "Person ID": 722, "Full Name": "Heather Williams", "Shift Count": 2 },
+    { "Person ID": 604, "Full Name": "Amanda Maxwell", "Shift Count": 2 }], 
+    requiredColumns: ['Person ID', 'Full Name', 'Shift Count'], 
+    orderBy: 'Person ID asc', 
+    placeholder: 'SELECT * FROM employee_shifts' 
+  },
+
   { id: 4, title: 'Hint 4 (placeholder)', prompt: 'Coming soon…', answer: [], requiredColumns: [], orderBy: '', placeholder: '/* TBD */' },
   { id: 5, title: 'Hint 5 (placeholder)', prompt: 'Coming soon…', answer: [], requiredColumns: [], orderBy: '', placeholder: '/* TBD */' },
   { id: 6, title: 'Hint 6 (placeholder)', prompt: 'Coming soon…', answer: [], requiredColumns: [], orderBy: '', placeholder: '/* TBD */' },
