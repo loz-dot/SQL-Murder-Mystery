@@ -82,5 +82,5 @@ pre {
 .accordion-item.locked .accordion-header { cursor: not-allowed; opacity: 0.6; }
 .accordion-panel { padding: 12px 14px; background: #444444; }
 .hint-intro { margin-bottom: 10px; white-space: pre-wrap; }
-.progress-note { margin-top: 10px; font-size: 0.9rem; color: #475569; }
+.progress-note { margin-top: 10px; font-size: 0.9rem; color: #e2e8f0; }
 

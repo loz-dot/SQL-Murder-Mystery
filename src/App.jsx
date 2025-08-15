@@ -16,7 +16,7 @@ We know that John Snow’s wife bought the panadol he consumed, while Halle Chur
 
 Return columns: id, date, products_purchased, shopname, card_owner
 Order by: id ASC
-Hint: Use a WHERE clause on card_owner and shopname
+Hint: Use a WHERE clause 
     `,
     answer: [
       { id: 225, date: '2025-04-01', products_purchased: 'toothpaste, panadol', shopname: 'Pharmacy Select', card_owner: 119 },
@@ -28,7 +28,7 @@ Hint: Use a WHERE clause on card_owner and shopname
   },
 
   // Blank placeholders (stay locked until earlier hints are solved)
-  { id: 2, title: 'Hint 2 (placeholder)', prompt: 'Coming soon…', answer: [], requiredColumns: [], orderBy: '', placeholder: '/* TBD */' },
+  { id: 2, title: 'Hint 2 Double Shifts Worked', prompt: 'Coming soon…', answer: [], requiredColumns: [], orderBy: '', placeholder: '/* TBD */' },
   { id: 3, title: 'Hint 3 (placeholder)', prompt: 'Coming soon…', answer: [], requiredColumns: [], orderBy: '', placeholder: '/* TBD */' },
   { id: 4, title: 'Hint 4 (placeholder)', prompt: 'Coming soon…', answer: [], requiredColumns: [], orderBy: '', placeholder: '/* TBD */' },
   { id: 5, title: 'Hint 5 (placeholder)', prompt: 'Coming soon…', answer: [], requiredColumns: [], orderBy: '', placeholder: '/* TBD */' },
@@ -123,6 +123,7 @@ export default function App() {
                 {isOpen && (
                   <div className="accordion-panel">
                     <HintBox
+                    hintId={idx + 1}
                       hint={h.prompt}
                       answer={h.answer}
                       requiredColumns={h.requiredColumns}

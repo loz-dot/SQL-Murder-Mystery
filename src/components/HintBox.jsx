@@ -1,8 +1,7 @@
 // src/components/HintBox.jsx
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import supabase from '../supabaseClient';
 
-// --- small utilities ---
 const deepEqual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
 function normalizeRows(rows, requiredColumns = [], orderBy = '') {
@@ -23,13 +22,12 @@ function normalizeRows(rows, requiredColumns = [], orderBy = '') {
     normalized = normalized.slice().sort((a, b) => {
       const va = a[col], vb = b[col];
       if (va === vb) return 0;
-      if (va == null) return 1;      // nulls last
+      if (va == null) return 1;
       if (vb == null) return -1;
       if (va < vb) return dir === 'desc' ? 1 : -1;
       return dir === 'desc' ? -1 : 1;
     });
   }
-
   return normalized;
 }
 
@@ -55,17 +53,20 @@ function ResultsTable({ rows }) {
 }
 
 /**
- * HintBox
+ * HintBox with persistence
  * Props:
+ * - hintId: string | number  (required, used for localStorage key)
  * - boxTitle?: string
- * - hint: string (instructions shown above the input)
- * - placeholder?: string (textarea placeholder)
- * - answer: array of row objects (expected result)
- * - requiredColumns?: string[] (columns that must be present/compared)
- * - orderBy?: string (e.g. "id asc")
- * - onSolved?: () => void (called once when solved)
+ * - hint: string
+ * - placeholder?: string
+ * - answer: array of row objects
+ * - requiredColumns?: string[]
+ * - orderBy?: string (e.g., "id asc")
+ * - onSolved?: () => void
+ * - lockOnSolve?: boolean (default true) - make input read-only after solve
  */
 export default function HintBox({
+  hintId,
   boxTitle = 'Hint',
   hint,
   placeholder = 'SELECT * FROM persons;',
@@ -73,12 +74,41 @@ export default function HintBox({
   requiredColumns = [],
   orderBy = '',
   onSolved,
+  lockOnSolve = true,
 }) {
+  if (hintId == null) {
+    throw new Error('HintBox requires a unique hintId prop for persistence.');
+  }
+
+  const storageKey = `hintbox:${hintId}`;
   const [query, setQuery] = useState('');
   const [results, setResults] = useState(null);
   const [feedback, setFeedback] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [solved, setSolved] = useState(false);
+
+  // Load persisted state
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(storageKey);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (typeof parsed.query === 'string') setQuery(parsed.query);
+        if (Array.isArray(parsed.results)) setResults(parsed.results);
+        if (typeof parsed.feedback === 'string') setFeedback(parsed.feedback);
+        if (typeof parsed.solved === 'boolean') setSolved(parsed.solved);
+      }
+    } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [storageKey]);
+
+  // Persist on changes
+  useEffect(() => {
+    try {
+      localStorage.setItem(storageKey, JSON.stringify({ query, results, feedback, solved }));
+    } catch {}
+  }, [storageKey, query, results, feedback, solved]);
 
   const expected = useMemo(
     () => normalizeRows(answer, requiredColumns, orderBy),
@@ -88,7 +118,6 @@ export default function HintBox({
   const runQuery = useCallback(async () => {
     setError('');
     setFeedback('');
-    setResults(null);
 
     const q = (query || '').trim();
     if (!q.toLowerCase().startsWith('select')) {
@@ -98,24 +127,23 @@ export default function HintBox({
 
     setLoading(true);
     try {
-      // Requires a Postgres function `run_custom_query(query text)` returning SETOF JSON or rows.
       const { data, error } = await supabase.rpc('run_custom_query', { query: q });
       if (error) throw error;
 
-      // data should be an array of row objects; adjust here if your RPC returns a different shape
       const rows = Array.isArray(data) ? data : [];
       setResults(rows);
 
-      // Compare with expected
       const actual = normalizeRows(rows, requiredColumns, orderBy);
-      const solved = deepEqual(actual, expected);
+      const isSolved = deepEqual(actual, expected);
+      setSolved(isSolved);
 
-      if (solved) {
+      if (isSolved) {
         setFeedback('✅ Correct! The next hint is unlocked.');
         if (typeof onSolved === 'function') onSolved();
       } else {
         setFeedback('❌ Not quite. Check your columns, rows, and ordering.');
       }
+      // NOTE: We DO NOT clear query/results — they persist in the box.
     } catch (e) {
       setError(e?.message || 'Something went wrong while running the query.');
     } finally {
@@ -124,40 +152,41 @@ export default function HintBox({
   }, [query, requiredColumns, orderBy, expected, onSolved]);
 
   return (
-    <div className="hint-box">
+    <div className={`hint-box ${solved ? 'hint-solved' : ''}`}>
       <div className="hint-header">
         <h3>{boxTitle}</h3>
+        {solved && <span className="badge-solved">Solved</span>}
       </div>
 
       <div className="hint-body">
         <p className="hint-text" style={{ whiteSpace: 'pre-wrap' }}>{hint}</p>
 
-        <label htmlFor="sql-input" className="sr-only">SQL</label>
+        <label htmlFor={`sql-input-${hintId}`} className="sr-only">SQL</label>
         <textarea
-          id="sql-input"
+          id={`sql-input-${hintId}`}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder}
           rows={5}
           className="query-textarea"
           onKeyDown={(e) => {
-            // let Enter insert a newline, but Cmd/Ctrl+Enter to run
             if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
               e.preventDefault();
-              runQuery();
+              if (!(lockOnSolve && solved)) runQuery();
             }
           }}
+          readOnly={lockOnSolve && solved}
         />
 
         <div className="hint-actions">
-          <button onClick={runQuery} disabled={loading}>
-            {loading ? 'Running…' : 'Run Query'}
+          <button onClick={runQuery} disabled={loading || (lockOnSolve && solved)}>
+            {loading ? 'Running…' : (solved && lockOnSolve ? 'Solved' : 'Run Query')}
           </button>
-          <span className="hint-kbd">Tip: Cmd/Ctrl + Enter to run</span>
+          {!solved && <span className="hint-kbd">Tip: Cmd/Ctrl + Enter to run</span>}
         </div>
 
         {error && <p className="error">{error}</p>}
-        {feedback && <p className="feedback">{feedback}</p>}
+        {feedback && <p className={`feedback ${solved ? 'ok' : ''}`}>{feedback}</p>}
 
         {Array.isArray(results) && (
           <ResultsTable rows={results} />
