@@ -86,7 +86,7 @@ export default function App() {
 
       <section>
         <h2>Database Schema</h2>
-        <img src="/images/database.png" height="1000" width="1000" alt="Database schema" />
+        <img src="/images/database.png" height="650" width="700" alt="Database schema" />
       </section>
 
 
