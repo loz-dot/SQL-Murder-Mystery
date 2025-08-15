@@ -24,11 +24,7 @@ Hint: Use a WHERE clause on card_owner and shopname
     ],
     requiredColumns: ['id', 'date', 'products_purchased', 'shopname', 'card_owner'],
     orderBy: 'id asc',
-    placeholder: `SELECT id, date, products_purchased, shopname, card_owner
-FROM credit_card_statements
-WHERE card_owner IN (/* ids */)
-  AND shopname = 'Pharmacy Select'
-ORDER BY id ASC;`
+    placeholder: `SELECT * FROM credit_card_statements`
   },
 
   // Add more hints here as you build them:
@@ -86,7 +82,7 @@ export default function App() {
 
       <section>
         <h2>Database Schema</h2>
-        <img src="/images/database.png" height="650" width="700" alt="Database schema" />
+        <img src="/images/database.png" height="570" width="800" alt="Database schema" />
       </section>
 
 
