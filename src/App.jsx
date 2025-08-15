@@ -27,16 +27,16 @@ Hint: Use a WHERE clause on card_owner and shopname
     placeholder: `SELECT * FROM credit_card_statements`
   },
 
-  // Add more hints here as you build them:
-  // {
-  //   id: 2,
-  //   title: 'Hint 2: Employees who worked both shifts',
-  //   prompt: '...',
-  //   answer: [...],
-  //   requiredColumns: [...],
-  //   orderBy: '...',
-  //   placeholder: '...'
-  // },
+  // Blank placeholders (stay locked until earlier hints are solved)
+  { id: 2, title: 'Hint 2 (placeholder)', prompt: 'Coming soon…', answer: [], requiredColumns: [], orderBy: '', placeholder: '/* TBD */' },
+  { id: 3, title: 'Hint 3 (placeholder)', prompt: 'Coming soon…', answer: [], requiredColumns: [], orderBy: '', placeholder: '/* TBD */' },
+  { id: 4, title: 'Hint 4 (placeholder)', prompt: 'Coming soon…', answer: [], requiredColumns: [], orderBy: '', placeholder: '/* TBD */' },
+  { id: 5, title: 'Hint 5 (placeholder)', prompt: 'Coming soon…', answer: [], requiredColumns: [], orderBy: '', placeholder: '/* TBD */' },
+  { id: 6, title: 'Hint 6 (placeholder)', prompt: 'Coming soon…', answer: [], requiredColumns: [], orderBy: '', placeholder: '/* TBD */' },
+  { id: 7, title: 'Hint 7 (placeholder)', prompt: 'Coming soon…', answer: [], requiredColumns: [], orderBy: '', placeholder: '/* TBD */' },
+  { id: 8, title: 'Hint 8 (placeholder)', prompt: 'Coming soon…', answer: [], requiredColumns: [], orderBy: '', placeholder: '/* TBD */' },
+  { id: 9, title: 'Hint 9 (placeholder)', prompt: 'Coming soon…', answer: [], requiredColumns: [], orderBy: '', placeholder: '/* TBD */' },
+  { id: 10, title: 'Hint 10 (placeholder)', prompt: 'Coming soon…', answer: [], requiredColumns: [], orderBy: '', placeholder: '/* TBD */' },
 ];
 
 // --- helper to persist progress (optional) ---
@@ -122,7 +122,6 @@ export default function App() {
 
                 {isOpen && (
                   <div className="accordion-panel">
-                    <p className="hint-intro">{h.prompt}</p>
                     <HintBox
                       hint={h.prompt}
                       answer={h.answer}
