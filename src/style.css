@@ -72,3 +72,15 @@ pre {
   font-size: 0.9rem;
   margin-top: 1rem;
 }
+
+.accordion { display: grid; gap: 12px; }
+.accordion-item { border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; }
+.accordion-header {
+  width: 100%; text-align: left; padding: 12px 14px; font-weight: 600;
+  background: #f8fafc; cursor: pointer; border: none;
+}
+.accordion-item.locked .accordion-header { cursor: not-allowed; opacity: 0.6; }
+.accordion-panel { padding: 12px 14px; background: #fff; }
+.hint-intro { margin-bottom: 10px; white-space: pre-wrap; }
+.progress-note { margin-top: 10px; font-size: 0.9rem; color: #475569; }
+

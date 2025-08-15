@@ -39,7 +39,7 @@ function QueryBox() {
         id="sql-input"
         value={query}
         onChange={handleChange}
-        placeholder="SELECT * FROM persons WHERE surname = 'Snow';"
+        placeholder="SELECT * FROM persons;"
         rows={3}
         onKeyDown={(e) => {
           if (e.key === 'Enter' && !e.shiftKey) {
