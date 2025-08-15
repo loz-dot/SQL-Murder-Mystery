@@ -85,9 +85,10 @@ export default function App() {
       <p>Autopsies confirmed both victims were killed by cyanide poisoning. The capsules were bought on different days, but from the same store.</p>
 
       <section>
-        <h2> Database Schema</h2>
-        <img src="src/assets/images/database.png" height="200" width="200"></img>
+        <h2>Database Schema</h2>
+        <img src="/images/database.png" height="1000" width="1000" alt="Database schema" />
       </section>
+
 
       <section>
         <h2>🔍 Query Console</h2>
